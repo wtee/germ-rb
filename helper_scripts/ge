@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# ge -gopher editor- a simple shell script to edit and format gopher documents
+# ge-0.1.1
+# released into the public domain
+
+#edit=nano
+edit=vi
+txt=$@
+$edit $txt
+if [ -s $txt ]
+    then
+    fold -s -67 $txt > ${txt}.tmp
+    mv ${txt}.tmp $txt
+    chmod 644 $txt
+fi
