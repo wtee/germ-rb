@@ -11,11 +11,11 @@ require 'date'
 
 # This directory is used whenever your gopherlog links to itself. It's where your
 # germ script resides relative to your server's root directory.
-Link_dir = "/users/wt"
+Link_dir = "/path/to/link"
 
 # This directory is where you keep the documents that make up your gopherlog, 
 # including your posts as well as your header and divider files.
-Doc_dir = "/ftp/pub#{Link_dir}/rc_posts"
+Doc_dir = "/path/to/docs"
 
 # This is the maximum number of posts to display per menu.
 Max_posts = 6
@@ -33,7 +33,7 @@ More_txt = "[Continued...]"
 Cmt_div = "---"
 
 # This is the server that your gopherlog is hosted on.
-Server = "sdf.org"
+Server = "example.org"
 
 # This is the port your server listens to. If you don't know it's not 70 you should 
 # probably leave it as it is.
@@ -41,7 +41,7 @@ Port = "70"
 
 # This is the name of your germ installation, which it uses when it links to itself.
 # make sure it is correct or none of your links will work.
-Name = "rcphlog.cgi"
+Name = "germ.cgi"
 
 # This is where you plugins go.
 Plugin_dir = ""
