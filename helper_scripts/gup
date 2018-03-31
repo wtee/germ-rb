@@ -1,0 +1,34 @@
+#!/bin/sh
+
+post=${1}
+
+post_dir="/Library/GopherServer/dat"
+
+#Here begins a nightmarish kludge written in awk that extracts
+#the last date modified value from the 'stat' command, formats it
+#so that it is acceptable to the 'touch' command and then assigns 
+#it to stat. All this is necessary so that you can update posts
+#without changing the order they appear in you phlog. I hope you
+#appreciate it.
+
+stamp=`stat -f "%Sc" ${post_dir}/${post} | \
+awk 'BEGIN{\
+    split("Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec", mo, " ");\
+    for (i=01; i<=12; i++) md[mo[i]] = i;\
+    }\
+\
+{\
+     gsub(/"/,"");\
+     if (length($2)==1) {\
+         $2=0 $2\
+     }\
+     if (length(md[$1])==1) {\
+        md[$1] =0 md[$1]\
+     }\
+     split($3,time,":");\
+     print $4 md[$1] $2 time[1] time[2] "." time[3]\
+}'`
+
+${editor} ${post_dir}/${post}
+
+touch -t ${stamp} ${post_dir}/${post}

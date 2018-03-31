@@ -1,0 +1,3 @@
+type:post|head|foot|archive|tag level:aux[-pre|-post]|replace
+
+if line.get.match(/post/

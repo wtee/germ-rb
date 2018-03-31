@@ -1,0 +1,24 @@
+#!/usr/bin/awk -f
+
+BEGIN {x=0; line=""}
+
+/^[0-9iIghsTpdcx].+?\t/ {
+    x=1
+    line=$0
+    print x
+}
+
+!/^[0-9iIghsTpdcx].+?\t/ {
+    print
+    x=0
+    print x
+}
+
+/\t/ {
+    print x
+    if (x==1) {
+        print $line $0
+        x=0
+        print x
+    }
+}

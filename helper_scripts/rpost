@@ -1,0 +1,33 @@
+#!/bin/sh
+
+#post to your gopherlog remotely
+
+rhost="sdf.org"
+
+rdir="gopher/.dat"
+
+work_dir="${HOME}/phlog"
+
+ruser="wt"
+
+rpass=""
+
+#Remote protocol. You can use either ftp or scp depending on which
+#you prefer and/or your server supports. To chose make sure to type
+#"ftp" or "scp" after rprot= and include the quotes.
+rprot="ftp"
+
+post=${1}
+
+if [ ${rprot}="ftp" ]; then
+    if [ ${rpass} -z ]; then
+        echo "Password:"
+        read rpass
+    fi
+
+    ftp -u ftp://${ruser}:${rpass}@${rhost}/${rdir}/${post} ${work_dir}/${post}
+fi
+
+#if [ ${rprot}="scp" ]; then
+#    scp ${work_dir} ${ruser}@{rhost}:${rdir}/${post}
+#fi

@@ -1,0 +1,62 @@
+#!/bin/sh
+
+#Mkphlog--Make a static gopherlog
+ 
+# Set the configurable variables below to what you want
+# and then get to writing gopherlogs. When you have your posts
+# written. 
+
+#~Configurable variables
+
+#Directory where gopherlog file will live
+phlog_dir="/path/to/gopherlog_file"
+
+#Name of gopherlog file
+phlog_file="gophermap"
+
+#Directory where you keep your posts
+post_dir="/path/to/posts"
+
+#File extension you use on for your posts
+post_ext="post"
+
+#The Divider between gopherlog entries
+div="-----------------------------------"
+
+#File to use as a header for your gopherlog
+header="${post_dir}/header.txt"
+
+#Show preview of posts (1=show preview, 0=show title and date only
+preview=1
+
+#Directory to use in links to your posts
+link_dir="/phlog"
+
+#Server that hosts gopherlogs
+server="example.com"
+
+#Port your server uses. (You probably don't need to change this)
+port="70"
+
+#~End Configuration
+
+
+tmp_map="${phlog_file}.new"
+
+txt_string="\tnull\ttext\t${port}"
+ 
+post_list=`ls -m -t ${post_dir}/*${post_ext} | sed s/,//g`
+
+awk '{print "i" $0 "\tnull\ttext\t70"}' ${header} >> ${phlog_dir}/${tmp_map}
+
+for pf in ${post_list}; do
+    echo "i${div}${txt_string}\r\n" >> ${phlog_dir}/${tmp_map}
+    echo "i`stat -f "%Sc" ${pf}`${txt_string}\r\n" >> ${phlog_dir}/${tmp_map}
+    echo "0`head -n 2 ${pf} | awk '!/^#[Tt]ags/ && !/^$/'`\t${link_dir}/`basename ${pf}`\t${server}\t${port}\r\n" >> ${phlog_dir}/${tmp_map} 
+    if [ ${preview}==1 ]; then
+        head ${pf} | awk 'NR > 2{print "i" $0 "\tnull\ttext\t70\r\n"}' >> ${phlog_dir}/${tmp_map}
+    fi
+    echo "i${txt_string}\r\n" >> ${phlog_dir}/${tmp_map} 
+done    
+mv ${phlog_dir}/${tmp_map} ${phlog_dir}/${phlog_file}
+chmod 644 ${phlog_dir}/${phlog_file} ${post_dir}/*

@@ -1,0 +1,22 @@
+#!/bin/sh
+
+post=${0}
+
+work_dir=`pwd`
+
+fold -s -65 ${work_dir)/${post} | \
+awk 'BEGIN {line=""}\
+\
+/\t/ {\
+     if (line=="") {\
+        line=$0\
+     } else if (line!="") {\
+        line=line $0;\
+        print line;\
+        line=""\
+    }\
+}\
+\
+!/\t/ {\
+    print\
+}' 
